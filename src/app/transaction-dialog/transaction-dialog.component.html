@@ -1,0 +1,54 @@
+<h1>Транзакция</h1>
+
+<form [formGroup]="form">
+  <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Сумма:</mat-label>
+    <input
+      matInput
+      [formControlName]="'amount'"
+      [type]="'number'"
+      autocomplete="off"
+      placeholder=""
+    />
+  </mat-form-field>
+
+  <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Периодичность:</mat-label>
+    <mat-select #period [formControlName]="'period'">
+      <mat-option *ngFor="let period of periods" [value]="period.value">
+        {{ period.title }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <app-days-control
+    *ngIf="period.value === 'week' || period.value === 'month'"
+    [formControlName]="'periodConfig'"
+    [type]="period.value"
+  ></app-days-control>
+
+  <mat-form-field
+    class="form-field"
+    *ngIf="period.value === 'single'"
+    appearance="outline"
+  >
+    <mat-label>Дата</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [formControlName]="'date'"
+      autocomplete="off"
+    />
+    <mat-hint>ДД/ММ/ГГГГ</mat-hint>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</form>
+
+<mat-dialog-actions class="actions">
+  <button class="button" mat-stroked-button [mat-dialog-close]="true">
+    Доход
+  </button>
+  <button class="button" mat-stroked-button [mat-dialog-close]="true">
+    Расход
+  </button>
+</mat-dialog-actions>

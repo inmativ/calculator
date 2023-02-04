@@ -1,0 +1,23 @@
+:host {
+  margin: 10px;
+  display: block;
+  width: 300px;
+}
+
+h1 {
+  font-size: 17px;
+  text-align: center;
+  margin-right: 7px;
+}
+
+.form-field {
+  display: block;
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  padding: 5px 0 0;
+  gap: 10px;
+}

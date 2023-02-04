@@ -1,0 +1,19 @@
+:host ::ng-deep {
+  &.mdc-evolution-chip__graphic {
+    width: 0 !important;
+  }
+
+  &.mdc-evolution-chip__checkmark {
+    display: none;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.day {
+  width: 9px;
+  text-align: center;
+}

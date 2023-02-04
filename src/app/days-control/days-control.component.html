@@ -1,0 +1,7 @@
+<mat-chip-listbox multiple [value]="value" (change)="changeSelected($event)">
+  <div class="grid">
+    <mat-chip-option *ngFor="let day of days">
+      <div class="day">{{ day.title }}</div>
+    </mat-chip-option>
+  </div>
+</mat-chip-listbox>

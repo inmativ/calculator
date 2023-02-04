@@ -1,0 +1,7 @@
+{
+  "importStringConfiguration": {
+    "maximumNumberOfImportExpressionsPerLine": {
+      "count": 1000
+    }
+  }
+}
