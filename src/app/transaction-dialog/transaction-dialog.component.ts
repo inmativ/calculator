@@ -9,20 +9,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { DaysControlComponent } from '../days-control/days-control.component';
+import { NewTransaction } from '../models/new-transaction.model';
 import { Form } from '../utils/type';
 
-type Period = 'single' | 'day' | 'week' | 'month';
+export type Period = 'single' | 'day' | 'week' | 'month';
 
 type PeriodOptions = {
   title: string;
   value: Period;
-};
-
-type Transaction = {
-  amount: null | number;
-  period: null | Period;
-  periodConfig: null | number[];
-  date: null;
 };
 
 @Component({
@@ -44,7 +38,7 @@ type Transaction = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionDialogComponent {
-  protected form: FormGroup<Form<Transaction>>;
+  protected form: FormGroup<Form<NewTransaction>>;
 
   protected periods: PeriodOptions[] = [
     { title: 'Единоразовая', value: 'single' },
@@ -55,18 +49,17 @@ export class TransactionDialogComponent {
 
   constructor(builder: FormBuilder) {
     this.form = this._getForm(builder);
-
-    this.form.valueChanges.subscribe((params) => {
-      console.log('params: ', params);
-    });
   }
 
-  private _getForm(builder: FormBuilder): FormGroup<Form<Transaction>> {
-    return builder.group<Transaction>({
+  protected close(type: 'income' | 'expense') {
+    return { type, ...this.form.value };
+  }
+
+  private _getForm(builder: FormBuilder): FormGroup<Form<NewTransaction>> {
+    return builder.group<NewTransaction>({
       amount: null,
       period: 'single',
       periodConfig: null,
-      date: null,
     });
   }
 }

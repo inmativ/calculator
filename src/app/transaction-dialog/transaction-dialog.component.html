@@ -36,7 +36,7 @@
     <input
       matInput
       [matDatepicker]="picker"
-      [formControlName]="'date'"
+      [formControlName]="'periodConfig'"
       autocomplete="off"
     />
     <mat-hint>ДД/ММ/ГГГГ</mat-hint>
@@ -45,10 +45,18 @@
 </form>
 
 <mat-dialog-actions class="actions">
-  <button class="button" mat-stroked-button [mat-dialog-close]="true">
+  <button
+    class="button"
+    mat-stroked-button
+    [mat-dialog-close]="close('income')"
+  >
     Доход
   </button>
-  <button class="button" mat-stroked-button [mat-dialog-close]="true">
+  <button
+    class="button"
+    mat-stroked-button
+    [mat-dialog-close]="close('expense')"
+  >
     Расход
   </button>
 </mat-dialog-actions>

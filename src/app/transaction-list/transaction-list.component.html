@@ -1,0 +1,16 @@
+<mat-action-list>
+  <div
+    class="item"
+    mat-list-item
+    *ngFor="let transaction of transactions$ | async; let index = index"
+  >
+    <span>
+      {{ transaction.amount }} ₽
+      {{ transaction.period }}
+      {{ transaction.periodConfig }}
+    </span>
+    <button class="remove" mat-stroked-button (click)="remove(index)">
+      <mat-icon class="icon">delete</mat-icon>
+    </button>
+  </div>
+</mat-action-list>
