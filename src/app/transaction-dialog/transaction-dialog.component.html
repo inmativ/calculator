@@ -39,7 +39,8 @@
       [formControlName]="'periodConfig'"
       autocomplete="off"
     />
-    <mat-hint>ДД/ММ/ГГГГ</mat-hint>
+    <mat-hint>ММ/ДД/ГГГГ</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 </form>

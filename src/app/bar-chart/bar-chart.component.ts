@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ChartConfiguration } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
+
+import { TypedChanges } from '../utils/type/typed-changes.util';
+import { ChartData } from './models/chart-data.model';
 
 @Component({
   selector: 'app-bar-chart',
@@ -12,17 +15,37 @@ import { NgChartsModule } from 'ng2-charts';
   styleUrls: ['./bar-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BarChartComponent {
+export class BarChartComponent implements OnChanges {
   @Input()
-  public xCount = 30;
+  public data?: ChartData;
+
+  public minWidth?: number;
 
   public barChartLegend = true;
   public barChartPlugins = [];
 
-  public barChartData: ChartConfiguration<'line'>['data'] = {
-    labels: Array(30).fill(1),
-    datasets: [{ data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }],
+  public barChartData?: ChartConfiguration<'line'>['data'];
+
+  public barChartOptions: ChartConfiguration<'line'>['options'] = {
+    scales: {
+      y: {
+        stacked: 'single',
+      },
+    },
   };
 
-  public barChartOptions: ChartConfiguration<'line'>['options'] = {};
+  ngOnChanges(changes: TypedChanges<this>): void {
+    const value = changes.data?.currentValue;
+
+    if (value) {
+      const { dates, values: data = [] } = value;
+
+      this.barChartData = {
+        labels: dates.map((date) => date.getDate()),
+        datasets: [{ data, label: 'Баланс' }],
+      };
+
+      this.minWidth = 20 * dates.length;
+    }
+  }
 }

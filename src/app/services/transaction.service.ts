@@ -20,8 +20,10 @@ export class TransactionService {
     this._observeChange(this.storageChange$);
   }
 
-  public addTransaction(value: Transaction) {
-    this._addInitiator$.next(value);
+  public addTransaction(value?: Transaction) {
+    if (value) {
+      this._addInitiator$.next(value);
+    }
   }
 
   public remove(id: number) {
