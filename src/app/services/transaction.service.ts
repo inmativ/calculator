@@ -20,7 +20,7 @@ export class TransactionService {
     this._observeChange(this.storageChange$);
   }
 
-  public addTransaction(value?: Transaction) {
+  public save(value?: Transaction) {
     if (value) {
       this._addInitiator$.next(value);
     }
@@ -28,6 +28,10 @@ export class TransactionService {
 
   public remove(id: number) {
     this._removeInitiator$.next(id);
+  }
+
+  public getById(id: number): Transaction | undefined {
+    return this._storage[id];
   }
 
   private _observeChange(change$: Observable<Transaction[]>) {
@@ -38,19 +42,28 @@ export class TransactionService {
   }
 
   private _getStorageChange() {
-    const add$ = this._addInitiator$.pipe(
-      tap((transaction) => this._storage.push(transaction))
+    const save$ = this._addInitiator$.pipe(
+      tap((transaction) => this._save(transaction))
     );
 
     const remove$ = this._removeInitiator$.pipe(
       tap((index) => this._storage.splice(index, 1))
     );
 
-    return merge(add$, remove$).pipe(
+    return merge(save$, remove$).pipe(
       startWith(null),
       map(() => this._storage),
       shareReplay({ refCount: true, bufferSize: 1 })
     );
+  }
+
+  private _save(transaction: Transaction) {
+    const id = transaction.id;
+    if (id === undefined) {
+      this._storage.push(transaction);
+    } else {
+      this._storage[id] = transaction;
+    }
   }
 
   private _getStorage() {

@@ -1,13 +1,18 @@
 export type Period = 'single' | 'day' | 'week' | 'month';
 
 export type NewTransaction = {
-  amount: null | number;
-  period: null | Period;
-  periodConfig: null | Date | number[];
+  title: string;
+  amount: number;
+  date: Date;
+  period: Period;
+  periodConfig: number[];
 };
 
 export type Transaction = {
+  id?: number;
+  title: string;
   amount: number;
   period: Period;
-  periodConfig: string | number[];
+  date: string;
+  periodConfig: number[];
 };

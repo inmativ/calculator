@@ -1,14 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { DaysControlComponent } from '../days-control/days-control.component';
-import { NewTransaction, Period, Transaction } from '../models/transaction.model';
+import {
+  NewTransaction,
+  Period,
+  Transaction,
+} from '../models/transaction.model';
 import { Form } from '../utils/type';
 
 type PeriodOptions = {
@@ -35,7 +44,10 @@ export type ModalResult = Transaction | undefined;
   styleUrls: ['./transaction-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TransactionDialogComponent {
+export class TransactionDialogComponent implements OnInit {
+  @Input()
+  public editedTransaction?: Transaction;
+
   protected form: FormGroup<Form<NewTransaction>>;
 
   protected periods: PeriodOptions[] = [
@@ -45,30 +57,44 @@ export class TransactionDialogComponent {
     { title: 'Месяц', value: 'month' },
   ];
 
-  constructor(builder: FormBuilder) {
+  constructor(
+    private readonly _dialogRef: MatDialogRef<TransactionDialogComponent>,
+    builder: FormBuilder
+  ) {
     this.form = this._getForm(builder);
   }
 
-  protected close(type: 'income' | 'expense'): ModalResult {
-    const { amount, period, periodConfig } = this.form.value;
+  ngOnInit(): void {
+    if (this.editedTransaction) {
+      const { date, ...other } = this.editedTransaction;
+      this.form.setValue({ date: new Date(date), ...other, title: '' });
+    }
+  }
+
+  protected close(type: 'income' | 'expense') {
+    const { amount, periodConfig, date, ...other } = this.form.getRawValue();
     const amountValue = Number(amount) * (type === 'income' ? 1 : -1);
 
-    if (!period || !periodConfig) return;
+    if (this.form.invalid) return;
 
-    return {
+    this._dialogRef.close({
+      id: this.editedTransaction?.id,
       amount: amountValue,
-      period: period,
-      periodConfig: Array.isArray(periodConfig)
-        ? periodConfig
-        : periodConfig.toISOString(),
-    };
+      date: date.toISOString(),
+      periodConfig,
+      ...other,
+    });
   }
 
   private _getForm(builder: FormBuilder): FormGroup<Form<NewTransaction>> {
-    return builder.group<NewTransaction>({
-      amount: null,
-      period: 'single',
-      periodConfig: null,
+    const group = builder.nonNullable.group({
+      title: '',
+      amount: 0,
+      date: new Date(),
+      period: 'single' as Period,
+      periodConfig: [[]] as number[][],
     });
+
+    return group;
   }
 }

@@ -1,7 +1,8 @@
 {
   "importStringConfiguration": {
     "maximumNumberOfImportExpressionsPerLine": {
-      "count": 1000
+      "type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
+      "count": 80
     }
   }
 }

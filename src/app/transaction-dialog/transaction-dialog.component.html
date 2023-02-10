@@ -2,6 +2,16 @@
 
 <form [formGroup]="form">
   <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Название:</mat-label>
+    <input
+      matInput
+      [formControlName]="'title'"
+      autocomplete="off"
+      placeholder=""
+    />
+  </mat-form-field>
+
+  <mat-form-field class="form-field" appearance="outline">
     <mat-label>Сумма:</mat-label>
     <input
       matInput
@@ -10,6 +20,18 @@
       autocomplete="off"
       placeholder=""
     />
+  </mat-form-field>
+
+  <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Дата</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [formControlName]="'date'"
+      autocomplete="off"
+    />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field class="form-field" appearance="outline">
@@ -26,38 +48,13 @@
     [formControlName]="'periodConfig'"
     [type]="period.value"
   ></app-days-control>
-
-  <mat-form-field
-    class="form-field"
-    *ngIf="period.value === 'single'"
-    appearance="outline"
-  >
-    <mat-label>Дата</mat-label>
-    <input
-      matInput
-      [matDatepicker]="picker"
-      [formControlName]="'periodConfig'"
-      autocomplete="off"
-    />
-    <mat-hint>ММ/ДД/ГГГГ</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
 </form>
 
 <mat-dialog-actions class="actions">
-  <button
-    class="button"
-    mat-stroked-button
-    [mat-dialog-close]="close('income')"
-  >
+  <button class="button" mat-stroked-button (click)="close('income')">
     Доход
   </button>
-  <button
-    class="button"
-    mat-stroked-button
-    [mat-dialog-close]="close('expense')"
-  >
+  <button class="button" mat-stroked-button (click)="close('expense')">
     Расход
   </button>
 </mat-dialog-actions>
