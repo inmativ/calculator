@@ -1,4 +1,3 @@
-export type ChartData = {
-  dates: Date[];
-  values: number[];
-};
+import { ChartConfiguration } from 'chart.js';
+
+export type ChartData = ChartConfiguration<'line'>['data'];

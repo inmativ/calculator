@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { map, merge, Observable, shareReplay, startWith, Subject, tap } from 'rxjs';
+import {
+  map,
+  merge,
+  Observable,
+  shareReplay,
+  startWith,
+  Subject,
+  tap,
+} from 'rxjs';
 
 import { Transaction } from '../models/transaction.model';
 
@@ -58,12 +66,8 @@ export class TransactionService {
   }
 
   private _save(transaction: Transaction) {
-    const id = transaction.id;
-    if (id === undefined) {
-      this._storage.push(transaction);
-    } else {
-      this._storage[id] = transaction;
-    }
+    const id = transaction.id ?? this._storage.length;
+    this._storage[id] = transaction;
   }
 
   private _getStorage() {

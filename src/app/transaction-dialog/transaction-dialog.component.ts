@@ -66,8 +66,15 @@ export class TransactionDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.editedTransaction) {
-      const { date, ...other } = this.editedTransaction;
-      this.form.setValue({ date: new Date(date), ...other, title: '' });
+      const { date, id, amount, ...other } = this.editedTransaction;
+
+      const rubles = Math.abs(amount) / 100;
+
+      this.form.setValue({
+        date: new Date(date),
+        amount: rubles,
+        ...other,
+      });
     }
   }
 
@@ -77,9 +84,11 @@ export class TransactionDialogComponent implements OnInit {
 
     if (this.form.invalid) return;
 
+    const kopeks = amountValue * 100;
+
     this._dialogRef.close({
       id: this.editedTransaction?.id,
-      amount: amountValue,
+      amount: kopeks,
       date: date.toISOString(),
       periodConfig,
       ...other,

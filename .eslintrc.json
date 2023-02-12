@@ -30,6 +30,20 @@
             "prefix": "app",
             "style": "kebab-case"
           }
+        ],
+        "no-useless-rename": [
+          "warn",
+          {
+            "ignoreDestructuring": false,
+            "ignoreImport": false,
+            "ignoreExport": false
+          }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "ignoreRestSiblings": true
+          }
         ]
       }
     },

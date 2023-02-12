@@ -10,7 +10,10 @@ import { map, Observable, Subject, switchMap } from 'rxjs';
 import { TransactionService } from '../services/transaction.service';
 
 import { Transaction } from '../models/transaction.model';
-import { ModalResult, TransactionDialogComponent } from '../transaction-dialog/transaction-dialog.component';
+import {
+  ModalResult,
+  TransactionDialogComponent,
+} from '../transaction-dialog/transaction-dialog.component';
 
 type TransactionView = Pick<Transaction, 'amount' | 'period' | 'title'> & {
   periodConfig: string;
@@ -53,9 +56,7 @@ export class TransactionListComponent {
   private _observeModal(id$: Subject<Id>) {
     id$
       .pipe(switchMap((id) => this._openModal(id)))
-      .subscribe((transaction) => {
-        this._storage.save(transaction);
-      });
+      .subscribe((transaction) => this._storage.save(transaction));
   }
 
   private _openModal(id?: number) {
